@@ -1,4 +1,3 @@
-const createUser = require("./create")
 const readUser = require("./read")
-
-module.exports = {createUser, readUser}
+const createUser = require("./create")
+module.exports = {readUser,createUser}

@@ -1,3 +1,10 @@
+#npm run dev
+#npx prisma studio
+#npx prisma migrate dev
+
+
+---------------------------
+
 const express = require("express");
 
 const createUser = express.Router();

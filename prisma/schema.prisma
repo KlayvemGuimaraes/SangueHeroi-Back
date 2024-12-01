@@ -16,7 +16,7 @@ model tbadministrador {
 
 model tbanunciante {
   id_anunciante       Int         @id @default(autoincrement())
-  telefone_anunciante BigInt?
+  telefone_anunciante String?     @db.VarChar(255)
   nome_anunciante     String?     @db.VarChar(255)
   id_usuario          Int?
   tbusuario           tbusuario?  @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_usuario_anunciante")
@@ -25,7 +25,7 @@ model tbanunciante {
 
 model tbanuncio {
   id_anuncio    Int           @id @default(autoincrement())
-  id_anunciante Int?
+  id_anunciante Int?          
   tipo_anuncio  String?       @db.VarChar(100)
   tbanunciante  tbanunciante? @relation(fields: [id_anunciante], references: [id_anunciante], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_anunciante")
 }
@@ -33,7 +33,7 @@ model tbanuncio {
 model tbhemocentro {
   id_hemocentro       Int              @id @default(autoincrement())
   nome_hemocentro     String?          @db.VarChar(255)
-  telefone_hemocentro BigInt?
+  telefone_hemocentro String?          @db.VarChar(255)
   endereco_hemocentro String?          @db.VarChar(150)
   id_administrador    Int?
   tbadministrador     tbadministrador? @relation(fields: [id_administrador], references: [id_administrador], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_administrador_hemocentro")
@@ -57,8 +57,8 @@ model tbregis_doacao {
   id_doacao          Int        @id @default(autoincrement())
   data_doacao        DateTime?  @db.Date
   id_usuario         Int?
-  comprovante_doacao BigInt     @unique
-  tbpontos           tbpontos[]
+  comprovante_doacao String     @unique     @db.VarChar(255)
+  tbpontos           tbpontos[] 
   tbusuario          tbusuario? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_usuario_regisdoacao")
 }
 
@@ -73,24 +73,26 @@ model tbsuporte {
 model tbusuario {
   id_usuario       Int              @id @default(autoincrement())
   endereco_usuario String?          @db.VarChar(150)
-  telefone_usuario BigInt?
+  telefone_usuario String?          @db.VarChar(255)
   nome_usuario     String?          @db.VarChar(255)
   cidade_usuario   String?          @db.VarChar(50)
   email_usuario    String?          @db.VarChar(100)
-  id_administrador Int?
-  id_usuario_pf    Int?
-  id_usuario_pj    Int?
+  senha            String?          @db.VarChar(255)
+  id_administrador Int?             
+  id_usuario_pf    String?          @db.VarChar(255)
+  id_usuario_pj    String?          @db.VarChar(255)
   tbanunciante     tbanunciante[]
   tbpublicacao     tbpublicacao[]
   tbregis_doacao   tbregis_doacao[]
   tbsuporte        tbsuporte[]
+  
   tbadministrador  tbadministrador? @relation(fields: [id_administrador], references: [id_administrador], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_administrador_usuario")
   tbusuario_pf     tbusuario_pf?    @relation(fields: [id_usuario_pf], references: [cpf], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_usuario_pf")
   tbusuario_pj     tbusuario_pj?    @relation(fields: [id_usuario_pj], references: [cnpj], onDelete: NoAction, onUpdate: NoAction, map: "fk_id_usuario_pj")
 }
 
 model tbusuario_pf {
-  cpf            BigInt      @id
+  cpf            String      @id  @db.VarChar(255)
   data_nasc      DateTime?   @db.Date
   tipo_sanguineo String?     @db.VarChar(5)
   sexo           sexo_enum?
@@ -98,7 +100,7 @@ model tbusuario_pf {
 }
 
 model tbusuario_pj {
-  cnpj      BigInt      @id
+  cnpj      String        @id @db.VarChar(255)
   tbusuario tbusuario[]
 }
 
